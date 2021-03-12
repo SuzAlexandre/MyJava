@@ -1,34 +1,62 @@
 package com.company;
 
 import javax.swing.*;
+import java.sql.DriverManager;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 public class Main {
 
     public static void main(String[] args) {
-//
-//
 //        Date now = new Date();
 //        String message = "Hello\t you"+"!!\n"+"this is :\\" +now;
 //        System.out.println(message);
 //        System.out.println(message.replace("!!","?"));
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a number:");
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("Enter a number:");
+//
+//        int num = scanner.nextInt();
+//
+//        if (num%5==0)
+//            System.out.println("Fizz");
+//        if (num%3==0)
+//            System.out.println("Buzz");
+//        if ((num%5!=0)&&(num%3!=0))
+//            System.out.println(num);
+        Connection conn = null;
 
-        int num = scanner.nextInt();
+        try {
 
+            String dbURL = "jdbc:sqlserver://10.41.32.2";
+            String user = "SZ_user";
+            String pass = "SZuser";
+            conn = DriverManager.getConnection(dbURL, user, pass);
+            if (conn != null) {
+                DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
+                System.out.println("Driver name: " + dm.getDriverName());
+                System.out.println("Driver version: " + dm.getDriverVersion());
+                System.out.println("Product name: " + dm.getDatabaseProductName());
+                System.out.println("Product version: " + dm.getDatabaseProductVersion());
+            }
 
-        if (num%5==0)
-            System.out.println("Fizz");
-        if (num%3==0)
-            System.out.println("Buzz");
-        if ((num%5!=0)&&(num%3!=0))
-            System.out.println(num);
-
-
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
 
 //        final float PI = 3.14F;
 //        int[][]numbers = {{1,2,3,4},{5,6,7}};
@@ -46,12 +74,5 @@ public class Main {
 //        JButton myButt = new JButton("Press me");
 //        frame.getContentPane().add(myButt);
 //        frame.setVisible(true);
-
-
-
-
-
-
-
     }
 }
